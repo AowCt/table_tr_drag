@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>test03</title>
+		<link type="text/css" rel="stylesheet" href="./css/global.css" />
+    	<link type="text/css" rel="stylesheet" href="./css/ui.css" />
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			.bomb_box {
+				width: 673px;
+				height: 560px;
+				background-color: #fff;
+				margin: 50px auto;
+				font-size: 16px;
+				color: #333;
+				font-family: 'PingFang-SC-Regular','microsoft yahei';
+			}
+			.d-header {
+				height: 40px;
+				background: #f3f8fc;
+				color: #1c7ada;
+				line-height: 40px;
+				padding-left: 16px;
+			}
+			.d-header .ui-layout-closure {
+				float: right;
+				margin-right: 16px;
+			}
+			.d-header .ui-search-button {
+				background-color: #7cc234;
+			}
+			.d-content {
+				width: 100%;
+				height: 480px;
+				background: #fff;
+				overflow: hidden;
+			}
+			.d-content-inner {
+				height: 478px;
+				text-align: center;
+				overflow-y: scroll;
+			}
+			table{
+				border-collapse: collapse;
+			}
+			table th {
+				box-sizing: border-box;
+				height: 38px;
+				line-height: 38px;
+				color: #333;
+				border: 1px solid #dcdcdc;
+				border-top-color: #b7c5da;
+			}
+			table td {
+				height: 40px;
+				font-size: 14px;
+				color: #666;
+				padding: 0 5px;
+				border: 1px solid #dcdcdc;
+				box-sizing: border-box;
+			}
+			.d-footer {
+				height: 40px;
+				background: #f5f5f5;
+				line-height: 40px;
+				padding-left: 16px;
+			}
+			.d-footer .d-foot-sect{
+				float: right;
+			}
+			.d-footer .d-foot-sect p{
+				width: 114px;
+				text-align: center;
+			}
+			.d-footer .d-foot-sect p span{
+				padding-left: 6px;
+			}
+			
+			.circle_tool {
+				display: inline-block;
+				width: 14px;
+				height: 14px;
+				border: 2px solid #d3d3d3;
+				border-radius: 50%;
+				cursor: pointer;
+				vertical-align: middle;
+				position: relative;
+			}
+			.circle_tool.selected{
+				border-color: #1d7bda;
+			}
+			.circle_tool.selected::after{
+				content: "";
+				position: absolute;
+				left: 4px;
+    			top: 2px;
+    			width: 4px;
+    			height: 7px;
+				border-right: 2px solid #1d7bda;
+			    border-bottom: 2px solid #1d7bda;
+			    transform: rotate(40deg);
+				-ms-transform: rotate(40deg);		/* IE 9 */
+				-webkit-transform: rotate(40deg);	/* Safari and Chrome */
+				-o-transform: rotate(40deg);		/* Opera */
+				-moz-transform: rotate(40deg);		/* Firefox */				
+			}
+			.colCode{
+				cursor: pointer;
+			}
+			tr:hover{
+				background-color: #f9fbfe;
+				box-sizing: border-box;
+			}
+			tr:hover td input{
+				background-color: #f9fbfe;
+			}
+			.inline_block {
+				display: inline-block;
+			}
+			.ui-text{
+				height: 100%;
+			}
+			.ui-layout-closure .ui-search-button,.ui-layout-closure .ui-closure-button,.ui-layout-closure .ui-closure-button{
+				padding: 0 21px;
+			}
+			.ui-layout-closure .ui-search-button,.ui-layout-closure .ui-closure-button,.ui-layout-closure .ui-search-button-text,.ui-layout-closure .ui-closure-button-text,.ui-layout-closure .ui-closure-button{
+				height: 24px;
+				line-height: 24px;
+			}
+			.ui-text .ui-text-text{
+				font-weight: 400;
+				color: #666;
+				font-size: 14px;
+			}
+			.ui-text-icon{
+				top: 6px;
+			    right: 6px;
+			    width: 6px;
+			    height: 6px;
+			    overflow: hidden;
+			     text-indent: -100px; 
+			    border-bottom: 1px solid #BFBFBF;
+			    border-right: 1px solid #BFBFBF;
+			    transform: rotate(40deg);
+			    -ms-transform: rotate(40deg);		/* IE 9 */
+				-webkit-transform: rotate(40deg);	/* Safari and Chrome */
+				-o-transform: rotate(40deg);		/* Opera */
+				-moz-transform: rotate(40deg);
+			}
+			.selectboxOption{
+				width: 100%;
+				display: none;
+			}
+			/*公共类*/
+			.ui-layout-closure {
+				text-align: center;
+				font-size: 0;
+			}
+			.ui-search-button {
+				-moz-user-select: none;
+				cursor: pointer;
+				display: inline-block;
+				height: 30px;
+				border: 1px solid #448e05;
+				background: #ffc719 url(../images/ui/buttons.gif) 0 -99px;
+				padding: 0 10px;
+				overflow: hidden;
+				vertical-align: middle;
+				color: #fff;
+				line-height: 30px;
+			}
+			.ui-closure-button {
+				-moz-user-select: none;
+				cursor: pointer;
+				display: inline-block;
+				height: 30px;
+				border: 1px solid #df8918;
+				background: #ffc719 url(../images/ui/buttons.gif) 0 -198px;
+				padding: 0 10px;
+				overflow: hidden;
+				vertical-align: middle;
+				color: #a83d04;
+				line-height: 30px;
+			}
+			.ui-closure-button-cancel {
+				border-color: #b6c4d8;
+				background: #f2f7ff url(../images/ui/buttons.gif) 0 -297px;
+				color: #3d3d3d;
+			}
+			.ui-closure-button-text {
+				cursor: pointer;
+				float: left;
+				display: block;
+				height: 30px;
+				overflow: hidden;
+				line-height: 30px;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.ui-search-button-text {
+				cursor: pointer;
+				float: left;
+				display: block;
+				height: 30px;
+				overflow: hidden;
+				line-height: 30px;
+				font-size: 14px;
+			}
+			.ui-text-text {
+				width: 100%;
+				height: 22px;
+				-height: 20px;
+				border: 0;
+				margin: 0;
+				padding: 0;
+				word-wrap: break-word;
+				word-break: break-all;
+				line-height: 22px;
+				-line-height: 20px;
+				font-size: 12px;
+				font-weight: 400;
+				color: #666;
+			}
+			.ml0 {
+				margin-left: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="bomb_box">
+			<div class="d-header">
+				<p class="inline_block">报表设置</p>
+				<div class="ui-layout-closure">
+					<span id="btnReset" class="ui-search-button">
+        				<label class="ui-search-button-text">重置</label>
+        			</span>
+					<span id="btnSave" class="ui-closure-button ml0">
+        				<label class="ui-closure-button-text">保存</label>
+        			</span>
+					<span id="btnClose" class="ui-closure-button ui-closure-button-cancel ml0">
+        				<label class="ui-closure-button-text">关闭</label>
+        			</span>
+				</div>
+				<div>
+
+				</div>
+			</div>
+			<div class="d-content">
+				<div class="d-content-inner">
+					<table border="0" cellspacing="0" cellpadding="0">
+						<colgroup>
+							<col width="95px">
+							<col width="222px">
+							<col width="117px">
+							<col width="118px">
+							<col width="93px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>显示顺序</th>
+								<th>列名称</th>
+								<th>列宽系数</th>
+								<th>列样式</th>
+								<th>列排序</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">使用科室
+								</td>
+								<td>
+									<input type="text" value="1.1" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="靠左" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中"><label>居中</label></li>
+													<li title="靠左" class="hover"><label>靠左</label></li>
+													<li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">物资名称
+								</td>
+								<td>
+									<input type="text" value="1.2" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="居中蓝色" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中"><label>居中</label></li>
+													<li title="靠左"><label>靠左</label></li>
+													<li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色" class="hover"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">规格型号
+								</td>
+								<td>
+									<input type="text" value="1.3" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="居中" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中" class="hover"><label>居中</label></li>
+													<li title="靠左"><label>靠左</label></li><li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">规格型号1
+								</td>
+								<td>
+									<input type="text" value="1.4" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="居中" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中" class="hover"><label>居中</label></li>
+													<li title="靠左"><label>靠左</label></li><li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">规格型号2
+								</td>
+								<td>
+									<input type="text" value="1.5" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="居中" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中" class="hover"><label>居中</label></li>
+													<li title="靠左"><label>靠左</label></li><li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+							<tr class="trs">
+								<td class="num"></td>
+								<td name="colCode" class="colCode">
+									<input type="hidden" value="WZMC">规格型号3
+								</td>
+								<td>
+									<input type="text" value="1.6" class="ui-text-text colWidth" style="text-align: center;"/>
+								</td>
+								<td name="colStyle">
+									<div style="position: relative;">
+										<div class="ui-text ui-selectbox" style="border: none;">
+											<input type="text" class="ui-text-text" readonly="readonly" value="居中" istext="1" name="" keys="1">
+											<i class="ui-text-icon ui-text-select"></i>
+										</div>
+										<div style="">
+											<div class="selectboxOption">
+												<ul>
+													<li title="居中" class="hover"><label>居中</label></li>
+													<li title="靠左"><label>靠左</label></li><li title="靠右"><label>靠右</label></li>
+													<li title="居中蓝色"><label>居中蓝色</label></li>
+													<li title="靠左蓝色"><label>靠左蓝色</label></li><li title="靠右蓝色"><label>靠右蓝色</label></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td name="orderBz"><span class="circle_tool"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="d-footer">
+				<p class="inline_block">是否对数据进行汇总</p>
+				<div class="d-foot-sect">
+					<p class="inline_block"><i class="circle_tool"></i><span>是</span></p>
+					<p class="inline_block"><i class="circle_tool selected"></i><span>否</span></p>
+				</div>
+			</div>
+		</div>
+
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/drag.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$(".d-content-inner table").on("click",".colCode",function(){
+					var index = $(this).parent().index();
+					var html ="";
+					var tableHtml = [];
+					if($(this).parent().hasClass("clickSect")){
+						$(this).parent().find(".colCode").css("color","");
+						$(this).parent().removeClass("clickSect");
+						html = $(this).parent().prop("outerHTML");
+						$(this).parent().remove();
+						if($(".d-content-inner table tbody tr").hasClass("clickSect")){
+							$(".d-content-inner table tbody tr.clickSect:last").after(html);
+						}else{
+							$(".d-content-inner table tbody tr:eq(0)").before(html);
+						}
+						circleTool($(".d-content-inner table tr"));
+						selectboxStyle();
+					}else{
+						$(this).parent().find(".colCode").css("color","#2881DB");
+						$(this).parent().addClass("clickSect");
+						html = $(this).parent().prop("outerHTML");
+						$(this).parent().remove();
+						if($(".d-content-inner table tbody tr").hasClass("clickSect")){
+							$(".d-content-inner table tbody tr.clickSect:last").after(html);
+							circleTool();
+							selectboxStyle();
+						}else{
+							$(".d-content-inner table tbody tr:eq(0)").before(html);
+							circleTool();
+							selectboxStyle();
+						}
+					}
+					clickSectNum();
+				});
+				circleTool();
+				selectboxStyle();
+				function clickSectNum(){
+					var len = $(".clickSect").length;
+					$(".d-content-inner table tr").find(".num").html("");
+					for(var i=0;i<len;i++){
+						$(".d-content-inner table tr.clickSect").eq(i).find(".num").html(i+1);
+					}
+				}
+				//点击是否对数据进行汇总
+				$(".d-footer .d-foot-sect").on("click",".circle_tool",function(){
+					$(this).addClass("selected").parent().siblings().find(".circle_tool").removeClass("selected");
+				})
+				//点击列排序进行选择
+				function circleTool(){
+					$(".d-content-inner table tr").find($(".circle_tool")).off("click").on("click",function(){
+						if($(this).is(".selected")){
+							$(this).removeClass("selected");
+						}else{
+							$(this).addClass("selected");
+						}
+					});
+				}
+				//点击列样式进行选择
+				function selectboxStyle(){
+					$(".d-content-inner table tr").find($(".ui-selectbox")).off("click").on("click",function(e){
+						var _self = this;
+						$(".d-content-inner table tr .selectboxOption").hide();
+						$(this).parent().find($(".selectboxOption")).show();
+						$(document).click(function(e){
+							$(".selectboxOption").hide();
+							if (e.stopPropagation){ 
+								e.stopPropagation(); 
+							}else{ 
+								e.cancelBubble = true; 
+							} 
+						});
+						$(".selectboxOption").on("click","li",function(){
+							var val = $(this).find("label").html()
+							$(_self).find(".ui-text-text").val(val);
+							$(_self).parent().find($(".selectboxOption")).hide();
+						}).off("mouseover").on("mouseover","li",function(){
+							$(this).addClass('hover').siblings().removeClass('hover');
+						});
+						if (e.stopPropagation){ 
+							e.stopPropagation(); 
+						}else{ 
+							e.cancelBubble = true; 
+						} 
+					});
+				}
+				$('table').DDSort({
+				    target: 'tr',
+				    floatStyle: {
+//				        'border': '1px solid #ccc',
+				        'background-color': '#f9fbfe',
+				        'cursor': 'move'
+				    },
+				    up: function () {
+//				        $.post("<?php echo site_url(ADMIN_MODULE . '/index/changeSort') ?>", {
+//				            id: $(this).attr('id'),
+//				            sort: $(this).index() - 1
+//				        }, function (data) {
+//				            if (data) {
+//				                return true;
+//				            } else {
+//				                return false;
+//				            }
+//				        })
+				 	},
+				 	jump:{
+				 		className:".clickSect"
+				 	}
+				});
+			});
+		</script>
+	</body>
+
+</html>
